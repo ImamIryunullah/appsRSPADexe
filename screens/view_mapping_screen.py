@@ -75,16 +75,17 @@ class ViewMappingScreen(tk.Frame):
             return
 
         db_columns = [col[1] for col in columns_info]
+        db_columns.remove("id")
 
         # Add NO column for display only
-        columns = ["no_urut"] + db_columns
+        columns = db_columns
 
         self.tree["columns"] = columns
         self.tree.column("#0", width=0, stretch=tk.NO)
 
         # Setup NO column
-        self.tree.heading("no_urut", text="NO")
-        self.tree.column("no_urut", width=50, anchor="center")
+        # self.tree.heading("no_urut", text="NO")
+        # self.tree.column("no_urut", width=50, anchor="center")
 
         # Setup DB columns
         for col in db_columns:
@@ -96,7 +97,8 @@ class ViewMappingScreen(tk.Frame):
 
         no = 1
         for row in rows:
-            self.tree.insert("", "end", values=(no, *row))
+            row = row[1:]
+            self.tree.insert("", "end", values=row)
             no += 1
 
         conn.close()

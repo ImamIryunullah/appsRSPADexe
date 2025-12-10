@@ -41,5 +41,3 @@ def insert_dynamic(row_dict):
     cursor.execute(sql, values)
     conn.commit()
     conn.close()
-    
-
