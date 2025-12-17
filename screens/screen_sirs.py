@@ -4,42 +4,37 @@ import pandas as pd
 import sqlite3
 import threading
 
-
 class SirsScreen(ctk.CTkFrame):
     def __init__(self, master, db_path="database/mapping.db"):
         super().__init__(master)
-
+    
         self.db_path = db_path  # Path ke database SQLite
         self.file_path = None
         self.df_preview = None
         self.current_font_size = 11
         self.is_processing = False  # Flag untuk mencegah double click
-
+        
         # === TITLE ===
         title = ctk.CTkLabel(self, text="Optimasi SIRS", font=("Arial", 20))
         title.pack(pady=10)
-
+        
         # === TOP BAR (Upload + Search + Zoom) ===
         top_bar = ctk.CTkFrame(self)
         top_bar.pack(fill="x", padx=10)
-
+        
         # Upload Button
         btn_upload = ctk.CTkButton(top_bar, text="Upload File Excel", width=150, command=self.upload_excel)
         btn_upload.pack(side="left", padx=5, pady=10)
-
         # Search field
         self.search_var = ctk.StringVar()
         entry_search = ctk.CTkEntry(top_bar, placeholder_text="Cari...", textvariable=self.search_var, width=200)
         entry_search.pack(side="left", padx=10)
         entry_search.bind("<KeyRelease>", self.filter_preview)
-
         # Zoom Buttons
         btn_zoom_in = ctk.CTkButton(top_bar, text="+", width=40, command=lambda: self.change_font_size(1))
         btn_zoom_in.pack(side="right", padx=5)
-
         btn_zoom_out = ctk.CTkButton(top_bar, text="-", width=40, command=lambda: self.change_font_size(-1))
         btn_zoom_out.pack(side="right")
-
         # File Info
         self.label_file = ctk.CTkLabel(self, text="Belum ada file yang dipilih")
         self.label_file.pack(pady=5)
@@ -260,6 +255,7 @@ class SirsScreen(ctk.CTkFrame):
 
     def run_process(self):
         """Proses optimasi SIRS dengan membaca data dari database mapping"""
+        
         if self.df_preview is None:
             messagebox.showwarning("Belum ada file", "Silakan upload file Excel terlebih dahulu.")
             return
